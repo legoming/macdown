@@ -2,14 +2,15 @@
 /* Sequence Diagram variables */
 /* Gantt chart variables */
 .mermaid .label {
-  font-family: 'trebuchet ms', verdana, arial;
+  font-family: "avenir next", "hanzipen SC", 'trebuchet ms', verdana, arial;
   color: #333;
 }
 .node rect,
 .node circle,
 .node ellipse,
 .node polygon {
-  fill: #cde498;
+/*   fill: #98ef88; */
+  fill: #98ef88;
   stroke: #13540c;
   stroke-width: 1px;
 }
@@ -27,12 +28,15 @@
   fill: #333;
 }
 .actor {
-  stroke: #13540c;
-  fill: #cde498;
+  //stroke: #13540c;
+  stroke: none;
+  fill: #98ef88;
+  //fill: #98ef88;
 }
 text.actor {
   fill: black;
   stroke: none;
+  font-family: "手札体"
 }
 .actor-line {
   stroke: grey;
@@ -61,7 +65,7 @@ text.actor {
 }
 .labelBox {
   stroke: #326932;
-  fill: #cde498;
+  fill: #98ef88;
 }
 .labelText {
   fill: black;
@@ -78,14 +82,18 @@ text.actor {
   stroke: #326932;
 }
 .note {
-  stroke: #6eaa49;
+  //stroke: #6eaa49;
+  stroke: none;
   fill: #fff5ad;
 }
 .noteText {
   fill: black;
   stroke: none;
-  font-family: 'trebuchet ms', verdana, arial;
-  font-size: 14px;
+  font-family: "avenir next", "hanzipen SC", 'trebuchet ms', verdana, arial;
+  font-size: 13px;
+  text-align: center;
+  vertical-align: center;
+  white-space: nowrap;
 }
 /** Section styling */
 .section {
@@ -98,7 +106,10 @@ text.actor {
 .section2 {
   fill: #6eaa49;
 }
-.section1,
+.section1 {
+  fill: white;
+  opacity: 0.2;
+}
 .section3 {
   fill: white;
   opacity: 0.2;
@@ -181,7 +192,7 @@ text.actor {
 .active1,
 .active2,
 .active3 {
-  fill: #cde498;
+  fill: #c6edf4;
   stroke: #13540c;
 }
 .activeText0,
@@ -219,7 +230,7 @@ text.actor {
 .activeCrit2,
 .activeCrit3 {
   stroke: #ff8888;
-  fill: #cde498;
+  fill: #98ef88;
   stroke-width: 2;
 }
 .doneCrit0,
@@ -256,12 +267,13 @@ text.actor {
 g.classGroup text {
   fill: #13540c;
   stroke: none;
-  font-family: 'trebuchet ms', verdana, arial;
-  font-size: 14px;
+  font-family: "avenir next", "hanzipen SC", 'trebuchet ms', verdana, arial;
+  font-size: 13px;
 }
 g.classGroup rect {
-  fill: #cde498;
+  fill: #98ef88;
   stroke: #13540c;
+  font-size: 13px;
 }
 g.classGroup line {
   stroke: #13540c;
@@ -270,7 +282,7 @@ g.classGroup line {
 svg .classLabel .box {
   stroke: none;
   stroke-width: 0;
-  fill: #cde498;
+  fill: #98ef88;
   opacity: 0.5;
 }
 svg .classLabel .label {
@@ -297,17 +309,17 @@ svg .classLabel .label {
   stroke-width: 1;
 }
 .aggregation {
-  fill: #cde498;
+  fill: #98ef88;
   stroke: #13540c;
   stroke-width: 1;
 }
 #aggregationStart {
-  fill: #cde498;
+  fill: #98ef88;
   stroke: #13540c;
   stroke-width: 1;
 }
 #aggregationEnd {
-  fill: #cde498;
+  fill: #98ef88;
   stroke: #13540c;
   stroke-width: 1;
 }
@@ -332,19 +344,19 @@ svg .classLabel .label {
   stroke-width: 1;
 }
 text {
-  font-family: 'trebuchet ms', verdana, arial;
-  font-size: 14px;
+  font-family: "avenir next", "hanzipen SC", 'trebuchet ms', verdana, arial;
+  font-size: 13px;
 }
 div.mermaidTooltip {
   position: absolute;
   text-align: center;
   max-width: 200px;
   padding: 2px;
-  font-family: 'trebuchet ms', verdana, arial;
-  font-size: 12px;
+  font-family: "avenir next", "hanzipen SC", 'trebuchet ms', verdana, arial;
+  font-size: 13px;
   background: #cdffb2;
   border: 1px solid #6eaa49;
-  border-radius: 2px;
+  border-radius: 3px;
   pointer-events: none;
   z-index: 100;
 }

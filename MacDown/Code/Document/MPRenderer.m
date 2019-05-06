@@ -95,7 +95,7 @@ NS_INLINE NSArray *MPPrismScriptURLsForLanguage(NSString *language)
 
 NS_INLINE NSString *MPHTMLFromMarkdown(
     NSString *text, int flags, BOOL smartypants, NSString *frontMatter,
-    hoedown_renderer *htmlRenderer, hoedown_renderer *tocRenderer)
+    hoedown_renderer *htmlRenderer, hoedown_renderer *tocRenderer, hoedown_renderer *guidelineRenderer)
 {
     NSData *inputData = [text dataUsingEncoding:NSUTF8StringEncoding];
     hoedown_document *document = hoedown_document_new(
@@ -133,6 +133,31 @@ NS_INLINE NSString *MPHTMLFromMarkdown(
         });
         NSRange replaceRange = NSMakeRange(0, result.length);
         result = [tocRegex stringByReplacingMatchesInString:result options:0
+                                                      range:replaceRange
+                                               withTemplate:toc];
+        hoedown_document_free(document);
+        hoedown_buffer_free(ob);
+    }
+    if (true)
+    {
+        document = hoedown_document_new(
+            guidelineRenderer, flags, kMPRendererNestingLevel);
+        ob = hoedown_buffer_new(64);
+        hoedown_document_render(
+            document, ob, inputData.bytes, inputData.length);
+        NSString *toc = [NSString stringWithUTF8String:hoedown_buffer_cstr(ob)];
+
+        static NSRegularExpression *guidelineReges = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            NSString *pattern_guideline = @"<p.*?>\\s*\\[GUIDELINE\\]\\s*</p>";
+            NSRegularExpressionOptions ops = NSRegularExpressionCaseInsensitive;
+            guidelineReges = [[NSRegularExpression alloc] initWithPattern:pattern_guideline
+                                                            options:ops
+                                                              error:NULL];
+        });
+        NSRange replaceRange = NSMakeRange(0, result.length);
+        result = [guidelineReges stringByReplacingMatchesInString:result options:0
                                                       range:replaceRange
                                                withTemplate:toc];
         hoedown_document_free(document);
@@ -326,6 +351,14 @@ NS_INLINE hoedown_renderer *MPCreateHTMLTOCRenderer()
     hoedown_renderer *tocRenderer =
         hoedown_html_toc_renderer_new(kMPRendererTOCLevel);
     tocRenderer->header = hoedown_patch_render_toc_header;
+    return tocRenderer;
+}
+
+NS_INLINE hoedown_renderer *MPCreateHTMLGuidelineRenderer()
+{
+    hoedown_renderer *tocRenderer =
+        hoedown_html_toc_renderer_new(kMPRendererTOCLevel);
+    tocRenderer->header = hoedown_patch_render_guideline_header;
     return tocRenderer;
 }
 
@@ -601,11 +634,13 @@ NS_INLINE void MPFreeHTMLRenderer(hoedown_renderer *htmlRenderer)
     }
     hoedown_renderer *htmlRenderer = MPCreateHTMLRenderer(self);
     hoedown_renderer *tocRenderer = NULL;
+    hoedown_renderer *guidelineRenderer = NULL;
     if (hasTOC)
     tocRenderer = MPCreateHTMLTOCRenderer();
+    guidelineRenderer = MPCreateHTMLGuidelineRenderer();
     self.currentHtml = MPHTMLFromMarkdown(
                                           markdown, extensions, smartypants, [frontMatter HTMLTable],
-                                          htmlRenderer, tocRenderer);
+                                          htmlRenderer, tocRenderer, guidelineRenderer);
     if (tocRenderer)
     hoedown_html_renderer_free(tocRenderer);
     MPFreeHTMLRenderer(htmlRenderer);
